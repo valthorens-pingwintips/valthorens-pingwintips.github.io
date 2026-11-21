@@ -2,6 +2,8 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://*.tile.opentopomap.org https://tiles.opensnowmap.org; connect-src 'self' https://nominatim.openstreetmap.org; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="ההמלצות החמות של צוות פינגווין בוואל טורנס: השכרת ציוד, בתי ספר לסקי, מסעדות, אפרה-סקי, ספא ומפה של מה הכי קרוב אליכם.">
 <meta property="og:title" content="ההמלצות החמות של צוות פינגווין בוואל טורנס">
@@ -546,7 +548,7 @@ body.locked{overflow:hidden}
   <span>צוות פינגווין · ואל טורנס</span>
 </div></footer>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" integrity="sha512-puJW3E/qXDqYp9IfhAI54BJEaWIfloJ7JWs7OeD5i6ruC9JZL1gERT1wjtwXFlh7CjE7ZJ+/vcRZRkIYIb6p4g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
 // business website per place (verified pages; the rest fall back to a web search until we have the real site)
 const SITES = {"Sport 2000 Eskiador": "https://location-ski.sport2000.fr/magasins/204-sport-2000-eskiador-val-thorens", "Intersport Haut des Balcons": "https://www.intersportrent.com/en/fr/skirental-valthorens", "Skiset Goitschel 2": "https://www.valthorens.com/en/sociopro/goitschel-sport-2-skiset", "Ski Cool": "https://www.checkyeti.com/en/p/558/ski-cool", "ESF Val Thorens": "https://www.valthorens.com/en/?p=11837", "Tango": "https://savoie-mont-blanc.com/en/restaurants/restaurant-tango-alpine-kitchen-6623011", "Steakhouse Club 72": "https://club-72.com/", "Jackie": "https://www.valthorens.com/en/equipement/jackie/", "La Folie Douce": "https://www.valthorens.com/en/equipement/la-folie-douce-val-thorens/", "Le Malaysia": "https://www.valthorens.com/en/?p=12151", "Le Board · Sport & Wellness": "https://www.valthorens.com/en/equipement/espace-bien-etre-centre-sportif-le-board/", "Le Grange": "https://www.restaurant-lagrange-valthorens.com/", "Winter Cafe": "http://www.wintercafe.fr/", "Gaufres GEO": "https://www.valthorens.com/en/sociopro/gaufres-geo", "Skiset Goitschel 1": "https://www.valthorens.com/en/sociopro/goitschel-sport-2-skiset"};
