@@ -320,7 +320,7 @@ body.locked .map-fab{opacity:0;pointer-events:none}
 .cat-pin:hover span,.cat-pin:focus-visible span{transform:rotate(-45deg) scale(1.15)}
 .cat-pin:focus-visible{outline:none}.cat-pin:focus-visible span{outline:2px solid #2F6FEB;outline-offset:2px}
 .me-pin{background:var(--tq-ink,#1E2235);border:3px solid #fff;border-radius:50%;box-shadow:0 0 0 6px rgba(76,205,214,.35),0 1px 4px rgba(0,0,0,.4)}
-.leaflet-tooltip.pin-tt,.leaflet-tooltip.me-tt{font-family:var(--he);font-weight:700;font-size:13px;border:0;border-radius:6px;box-shadow:0 2px 8px rgba(20,24,40,.2);padding:3px 9px}
+.leaflet-tooltip.pin-tt,.leaflet-tooltip.me-tt{direction:rtl;font-family:var(--he);font-weight:700;font-size:13px;border:0;border-radius:6px;box-shadow:0 2px 8px rgba(20,24,40,.2);padding:3px 9px}
 .leaflet-tooltip.me-tt{background:var(--navy);color:#fff}.leaflet-tooltip.me-tt::before{border-top-color:var(--navy)}
 .t-street{filter:saturate(.7) contrast(.96) brightness(1.03)}
 .map-sw{display:flex;flex-direction:column;align-items:flex-end;gap:6px;font-family:var(--he)}
@@ -335,6 +335,10 @@ body.locked .map-fab{opacity:0;pointer-events:none}
 .map-canvas:not(.has-osm)~.legend li[data-c]{cursor:default}
 .legend li[aria-pressed="false"]{opacity:.4;text-decoration:line-through}
 .legend li[data-c]:focus-visible{outline:2px solid #2F6FEB;border-radius:4px}
+
+.n-nav{display:block;font-size:13px;font-weight:700;color:var(--navy);text-decoration:underline;text-decoration-color:var(--tq);text-underline-offset:3px;margin-top:2px;text-align:left}
+.leaflet-tooltip.route-tt{direction:rtl;background:#fff;color:var(--navy);font:700 13px var(--he);border:0;border-radius:999px;padding:4px 10px;box-shadow:0 2px 8px rgba(20,24,40,.25)}
+.leaflet-tooltip.route-tt::before{display:none}
 
 
 /* ---------- tips, about, footer ---------- */
@@ -709,7 +713,7 @@ PLACES.forEach((p,i) => {
     <p class="why">${txt(p.why)}</p>
     <div class="acts">
       ${p.cat === "spa" && p.free ? "" : `<a class="btn btn-go" href="${MENUS[p.name] || siteOf(p)}" target="_blank" rel="noopener">${MENUS[p.name] ? "לתפריט" : "לאתר העסק"} ↗</a>`}
-      <a class="map-a" href="${p.map}" target="_blank" rel="noopener">${p.cat === "spa" && p.free ? "למידע נוסף" : "מפה"} ↗</a>
+      ${p.cat === "spa" && p.free ? `<a class="map-a" href="${p.map}" target="_blank" rel="noopener">למידע נוסף ↗</a>` : `<a class="map-a nav-a" data-i="${i}" href="${p.map}" target="_blank" rel="noopener">ניווט ↗</a>`}
     </div>`;
   document.querySelector(`.places[data-cat="${p.cat}"]`).appendChild(li);
 });
@@ -761,6 +765,9 @@ const CAT = {rent:["השכרת ציוד","#2E64C8"],school:["בתי ספר לס�
 const svgNS = "http://www.w3.org/2000/svg";
 const town = document.getElementById("town"), tip = document.getElementById("tip");
 const pts = PLACES.map((p,i) => ({...p, i, ll: COORDS[p.name]})).filter(p => p.ll);
+// "ניווט" opens Google Maps walking directions from the visitor's current location (no key needed)
+const navUrl = p => "https://www.google.com/maps/dir/?api=1&travelmode=walking&destination=" + (p.ll ? p.ll.join(",") : encodeURIComponent(p.name + " Val Thorens"));
+document.querySelectorAll("a.nav-a").forEach(a => { const p = PLACES[a.dataset.i]; a.href = navUrl({...p, ll: COORDS[p.name]}); });
 const lat0 = 45.2985, kx = Math.cos(lat0*Math.PI/180)*111320, ky = 110574; // metres per degree
 const inTown = pts.filter(p => p.name !== "La Folie Douce");
 const xs = inTown.map(p => p.ll[1]*kx), ys = inTown.map(p => -p.ll[0]*ky);
@@ -806,7 +813,7 @@ function setMe(ll, how, gps){
     if (!best) return;
     const min = Math.max(1, Math.round(best.d/75));
     const li = document.createElement("li");
-    li.innerHTML = `<span class="cat-dot" style="background:${CAT[c][1]}"></span><span class="n-name"><button type="button">${best.p.name}</button><small>${CAT[c][0]}</small></span><span class="n-dist">${best.d<1000?Math.round(best.d/10)*10+" מ׳":(best.d/1000).toFixed(1)+" ק״מ"} · ${min} דק׳</span>`;
+    li.innerHTML = `<span class="cat-dot" style="background:${CAT[c][1]}"></span><span class="n-name"><button type="button">${best.p.name}</button><small>${CAT[c][0]}</small></span><span class="n-dist">${best.d<1000?Math.round(best.d/10)*10+" מ׳":(best.d/1000).toFixed(1)+" ק״מ"} · ${min} דק׳<a class="n-nav" href="${navUrl(best.p)}" target="_blank" rel="noopener">ניווט ↗</a></span>`;
     li.querySelector("button").addEventListener("click",()=>{ if (OSM) return OSM.focus(best.p); Object.values(marks).forEach(m=>m.classList.remove("on")); marks[best.p.i].classList.add("on"); marks[best.p.i].focus(); });
     near.appendChild(li);
   });
@@ -886,7 +893,15 @@ let OSM = null;
       li.setAttribute("aria-pressed", !off); pts.filter(p=>p.cat===c).forEach(p => off ? map.removeLayer(mk[p.i]) : mk[p.i].addTo(map)); };
     li.addEventListener("click", t); li.addEventListener("keydown", e => { if (e.key==="Enter"||e.key===" ") { e.preventDefault(); t(); } });
   });
-  let me = null, acc = null, follow = false;
+  let me = null, acc = null, follow = false, line = null, target = null;
+  // dotted line from "you are here" to the place you picked, with distance and walking minutes
+  function drawLine(){
+    if (line) { line.remove(); line = null; }
+    if (!me || !target) return;
+    const a = me.getLatLng(), d = dist([a.lat,a.lng], target.ll), m = Math.max(1, Math.round(d/75));
+    line = L.polyline([a, target.ll],{color:"#1E2235",weight:4,dashArray:"2 9",lineCap:"round",interactive:false}).addTo(map)
+      .bindTooltip(`${d<1000?Math.round(d/10)*10+" מ׳":(d/1000).toFixed(1)+" ק״מ"} · ${m} דק׳ הליכה`,{permanent:true,direction:"center",className:"route-tt"});
+  }
   map.on("click", e => { follow = false; hotelSel.value = ""; setMe([e.latlng.lat,e.latlng.lng], "סימנתם מיקום במפה. אפשר לגעת שוב כדי להזיז."); });
   map.on("dragstart", () => { follow = false; });
   const meIcon = L.divIcon({className:"me-pin",iconSize:[20,20]});
@@ -896,10 +911,15 @@ let OSM = null;
       else me.setLatLng(ll);
       if (acc) { acc.remove(); acc = null; }
       if (r) acc = L.circle(ll,{radius:r,stroke:false,fillColor:"#4CCDD6",fillOpacity:.18,interactive:false}).addTo(map);
-      if (!r || follow) map.panTo(ll);
+      drawLine();
+      if ((!r || follow) && !target) map.panTo(ll);
     },
     follow(on){ follow = on; },
-    focus(p){ if (hidden.has(p.cat)) document.querySelector(`#legend li[data-c="${p.cat}"]`)?.click(); map.setView(p.ll, 17); mk[p.i].openTooltip(); },
+    focus(p){ if (hidden.has(p.cat)) document.querySelector(`#legend li[data-c="${p.cat}"]`)?.click();
+      target = p;
+      if (me) { drawLine(); map.fitBounds(L.latLngBounds([me.getLatLng(), p.ll]).pad(0.35), {maxZoom:17}); }
+      else map.setView(p.ll, 17);
+      mk[p.i].openTooltip(); },
     refresh(){ map.invalidateSize(); if (!me) map.fitBounds(town); }
   };
 })();
