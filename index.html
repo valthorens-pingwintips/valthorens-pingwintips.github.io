@@ -336,6 +336,14 @@ body.locked .map-fab{opacity:0;pointer-events:none}
 .legend li[aria-pressed="false"]{opacity:.4;text-decoration:line-through}
 .legend li[data-c]:focus-visible{outline:2px solid #2F6FEB;border-radius:4px}
 
+/* resort switch + places per resort */
+.rs-sw{display:inline-flex;margin:14px 0 4px;padding:4px;border-radius:999px;background:rgba(255,255,255,.14);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.28)}
+.rs-sw button{all:unset;cursor:pointer;padding:8px 18px;border-radius:999px;color:#fff;font:700 15px var(--he);transition:background .2s,color .2s}
+.rs-sw button[aria-pressed="true"]{background:#fff;color:var(--navy)}
+.rs-sw button:focus-visible{outline:2px solid var(--tq);outline-offset:2px}
+html[data-r="vt"] .place[data-r="lm"],html[data-r="vt"] .place-none[data-r="lm"],html[data-r="lm"] .place[data-r="vt"],html[data-r="lm"] .place-none[data-r="vt"]{display:none}
+.place-none{list-style:none;color:var(--muted);font-size:15px;padding:18px 4px}
+
 .n-nav{display:block;font-size:13px;font-weight:700;color:var(--navy);text-decoration:underline;text-decoration-color:var(--tq);text-underline-offset:3px;margin-top:2px;text-align:left}
 .leaflet-tooltip.route-tt{direction:rtl;background:#fff;color:var(--navy);font:700 13px var(--he);border:0;border-radius:999px;padding:4px 10px;box-shadow:0 2px 8px rgba(20,24,40,.25)}
 .leaflet-tooltip.route-tt::before{display:none}
@@ -420,7 +428,7 @@ body.locked{overflow:hidden}
 <header class="hdr">
   <div class="hdr-top"><div class="wrap">
     <a class="logo" href="#top" aria-label="ואל טורנס, לראש הדף">
-      <span class="logo-w"><svg aria-hidden="true" width="30" height="22" viewBox="0 0 30 22"><path d="M1 21L11 4l5 8 3-4 10 13z" fill="#4CCDD6"/><path d="M8.5 8.5L11 4l2.6 4.2-1.6 1.3-1.2-1-1.3 1z" fill="#fff"/></svg>VAL THORENS</span>
+      <span class="logo-w"><svg aria-hidden="true" width="30" height="22" viewBox="0 0 30 22"><path d="M1 21L11 4l5 8 3-4 10 13z" fill="#4CCDD6"/><path d="M8.5 8.5L11 4l2.6 4.2-1.6 1.3-1.2-1-1.3 1z" fill="#fff"/></svg><span data-rs="en">VAL THORENS</span></span>
       <span class="logo-t">צוות פינגווין · ההמלצות החמות שלנו</span>
     </a>
     <div class="hdr-end"><a class="hdr-cta" href="#map">מה קרוב אליי?</a><span class="pw-logo" role="img" aria-label="Pingwin, have fun"></span></div>
@@ -429,8 +437,9 @@ body.locked{overflow:hidden}
 </header>
 <main id="top">
 <section class="hero" data-bg="hero"><div class="wrap">
-  <p class="hero-k">2,300 מ׳ · שלושת העמקים</p>
-  <h1 class="hero-title"><span>ההמלצות החמות</span> של צוות פינגווין בוואל טורנס</h1>
+  <p class="hero-k"><span data-rs="alt">2,300 מ׳</span> · שלושת העמקים</p>
+  <div class="rs-sw" role="group" aria-label="באיזה אתר אתם?"><button type="button" data-r="vt">ואל טורנס</button><button type="button" data-r="lm">לה מניור</button></div>
+  <h1 class="hero-title"><span>ההמלצות החמות</span> של צוות פינגווין <span data-rs="in">בוואל טורנס</span></h1>
   <p class="lede">המקומות שאנחנו, צוות פינגווין, הולכים אליהם כל העונה.</p>
   <form class="find" role="search" id="find-form">
     <label for="q" class="sr" hidden>מה מחפשים?</label>
@@ -452,7 +461,7 @@ body.locked{overflow:hidden}
 
 <section class="sec about-sec" id="about" data-bg="about"><div class="wrap"><div class="sec-h"><div><span class="sec-w">who we are</span><h2>מי אנחנו</h2><p class="intro">הצוות שמאחורי ההמלצות.</p></div></div><div class="about">
   <div>
-    <p>צוות הנציגים של פינגווין בוואל טורנס. אנחנו גרים באתר כל העונה, מכירים את המקומות ומכירים את האנשים שמאחוריהם.</p>
+    <p>צוות הנציגים של פינגווין בוואל טורנס ובלה מניור. אנחנו גרים באתר כל העונה, מכירים את המקומות ומכירים את האנשים שמאחוריהם.</p>
   </div>
 </div></div></section>
 </main>
@@ -475,7 +484,7 @@ body.locked{overflow:hidden}
         <button class="btn btn-navy" id="locate" type="button">איפה אני?</button>
         <p class="map-hint" id="map-hint">או געו במפה במקום שבו אתם נמצאים.</p>
       </div>
-      <div class="map-canvas"><div id="lmap" dir="ltr" hidden></div><svg id="town" role="img" aria-label="מפת ואל טורנס עם המקומות המומלצים"></svg><div class="tip" id="tip" hidden></div></div>
+      <div class="map-canvas"><div id="lmap" dir="ltr" hidden></div><svg id="town" role="img" aria-label="מפה עם המקומות המומלצים"></svg><div class="tip" id="tip" hidden></div></div>
       <ul class="legend" id="legend"></ul>
     </div>
     <aside class="near" aria-live="polite">
@@ -545,7 +554,7 @@ body.locked{overflow:hidden}
 <button class="map-fab" id="map-fab" type="button" aria-label="מפה: מה קרוב אליי"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span>מפה</span></button>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <footer><div class="wrap">
-  <span class="f-brand"><span class="pw-logo" role="img" aria-label="Pingwin, have fun"></span><span class="f-logo">VAL THORENS</span></span>
+  <span class="f-brand"><span class="pw-logo" role="img" aria-label="Pingwin, have fun"></span><span class="f-logo" data-rs="en">VAL THORENS</span></span>
   <span>ההנחות בתוקף לעונת 2026/27, לפי תנאי כל עסק.</span>
   <span>צוות פינגווין · ואל טורנס</span>
 </div></footer>
@@ -556,7 +565,14 @@ body.locked{overflow:hidden}
 const SITES = {"Sport 2000 Eskiador": "https://location-ski.sport2000.fr/magasins/204-sport-2000-eskiador-val-thorens", "Intersport Haut des Balcons": "https://www.intersportrent.com/en/fr/skirental-valthorens", "Skiset Goitschel 2": "https://www.valthorens.com/en/sociopro/goitschel-sport-2-skiset", "Ski Cool": "https://www.checkyeti.com/en/p/558/ski-cool", "ESF Val Thorens": "https://www.valthorens.com/en/?p=11837", "Tango": "https://savoie-mont-blanc.com/en/restaurants/restaurant-tango-alpine-kitchen-6623011", "Steakhouse Club 72": "https://club-72.com/", "Jackie": "https://www.valthorens.com/en/equipement/jackie/", "La Folie Douce": "https://www.valthorens.com/en/equipement/la-folie-douce-val-thorens/", "Le Malaysia": "https://www.valthorens.com/en/?p=12151", "Le Board · Sport & Wellness": "https://www.valthorens.com/en/equipement/espace-bien-etre-centre-sportif-le-board/", "Le Grange": "https://www.restaurant-lagrange-valthorens.com/", "Winter Cafe": "http://www.wintercafe.fr/", "Gaufres GEO": "https://www.valthorens.com/en/sociopro/gaufres-geo", "Skiset Goitschel 1": "https://www.valthorens.com/en/sociopro/goitschel-sport-2-skiset"};
 // restaurants: straight to the menu when we have one
 const MENUS = {"Tango":"https://www.langleyhotels.eu/globalassets/hotels/hotel-tango/tango-a-la-carte-menu_a3_24-25.pdf"};
-const siteOf = p => SITES[p.name] || "https://www.google.com/search?q=" + encodeURIComponent(p.name.replace(/\s*·.*$/,"") + " Val Thorens");
+const siteOf = p => SITES[p.name] || "https://www.google.com/search?q=" + encodeURIComponent(p.name.replace(/\s*·.*$/,"") + " " + (p.r === "lm" ? "Les Menuires" : "Val Thorens"));
+// resorts: the page shows one at a time (switch in the hero, or ?r=lm in the link)
+const RESORTS = {
+  vt:{in:"בוואל טורנס", en:"VAL THORENS", alt:"2,300 מ׳", q:"Val Thorens", c:[45.2977,6.5815], box:"6.570,45.307,6.592,45.292"},
+  lm:{in:"בלה מניור", en:"LES MENUIRES", alt:"1,850 מ׳", q:"Les Menuires", c:[45.3205,6.5420], box:"6.528,45.330,6.556,45.312"}
+};
+var R = (() => { const u = new URLSearchParams(location.search).get("r"); if (RESORTS[u]) return u; try { const v = localStorage.getItem("resort"); if (RESORTS[v]) return v; } catch (e) {} return "vt"; })();
+const rOf = p => p.r || "vt";
 // Sample places. Real names where the team already works with the business; everything unknown is a marked placeholder.
 const PLACES = [
 {
@@ -698,13 +714,34 @@ const PLACES = [
 "why": "שלישי וחמישי, כל היום, בכיכר המרכזית ליד הכנסייה: גבינות, דבש, נקניקים ועבודות יד.",
 "map": "https://www.google.com/maps/place/1049+Grande+Rue,+73440+Les+Belleville/@45.2977447,6.5839838,19z",
 "free": true
+},
+{
+"r": "lm",
+"cat": "rent",
+"name": "Intersport Reberty 2000 Premium",
+"why": "השכרת ציוד רגיל ופרימיום, כמה דקות מהמלון. שם גם משדרגים ציוד ומוסיפים ביטוח (מומלץ).",
+"map": "https://www.google.com/maps/search/?api=1&query=45.3184838,6.5460889"
+},
+{
+"r": "lm",
+"cat": "school",
+"name": "ESF Les Menuires · Reberty 2000",
+"why": "בית הספר לסקי שאנחנו עובדים איתו. בהרשמה ציינו שהגעתם דרך פינגווין.",
+"map": "https://www.google.com/maps/search/?api=1&query=45.3171958,6.5469363"
+},
+{
+"r": "lm",
+"cat": "shop",
+"name": "Sherpa Reberty 2000",
+"why": "סופרמרקט במפלס התחתון, מתחת למעליות. ביום ראשון רוב החנויות סגורות, הסופר פתוח.",
+"map": "https://www.google.com/maps/search/?api=1&query=45.317772,6.54586"
 }
 ];
 const ph = s => /^\[/.test(s) ? `<span class="ph">${s}</span>` : (/[א-ת]/.test(s) ? s : `<span class="latin">${s}</span>`);
 const txt = s => /^\[/.test(s) ? `<span class="ph">${s}</span>` : s;
 PLACES.forEach((p,i) => {
   const li = document.createElement("li");
-  li.className = "place"; li.dataset.i = i;
+  li.className = "place"; li.dataset.i = i; li.dataset.r = rOf(p);
   li.innerHTML = `
     <div class="top">
       <div style="min-width:0"><h3>${ph(p.name)}</h3></div>
@@ -717,6 +754,11 @@ PLACES.forEach((p,i) => {
     </div>`;
   document.querySelector(`.places[data-cat="${p.cat}"]`).appendChild(li);
 });
+document.querySelectorAll("ul.places").forEach(ul => Object.keys(RESORTS).forEach(r => {
+  if (ul.querySelector(`.place[data-r="${r}"]`)) return;
+  const li = document.createElement("li"); li.className = "place-none"; li.dataset.r = r;
+  li.textContent = "עוד אין לנו כאן המלצות " + RESORTS[r].in + ". בקרוב."; ul.appendChild(li);
+}));
 document.addEventListener("click", e => {
   const b = e.target.closest(".perk-chip[aria-controls]");
   if (b) {
@@ -746,7 +788,8 @@ const COORDS = {
  "The Shelter":[45.2971531,6.585315],"Sk'ewok":[45.2980773,6.5805326],"Gaufres GEO":[45.2980837,6.5816226],
  "La Folie Douce":[45.3048797,6.5879161],"Le Malaysia":[45.2976387,6.5816092],
  "Le Board · Sport & Wellness":[45.2977631,6.580772],"שקיעה בפקלה":[45.2954782,6.5758228],
- "La Boulangerie de Val'Tho":[45.2979001,6.5809613],"שוק האיכרים":[45.2977447,6.5839838]
+ "La Boulangerie de Val'Tho":[45.2979001,6.5809613],"שוק האיכרים":[45.2977447,6.5839838],
+ "Intersport Reberty 2000 Premium":[45.3184838,6.5460889],"ESF Les Menuires · Reberty 2000":[45.3171958,6.5469363],"Sherpa Reberty 2000":[45.317772,6.54586]
 };
 // our hotels + landmarks (positions read from OpenStreetMap; * = approximate, check on site)
 const HOTELS = [
@@ -754,22 +797,24 @@ const HOTELS = [
  ["Hotel Sherpa",[45.2981,6.58528]],["Pashmina",[45.29559,6.58736]],["Fahrenheit Seven",[45.29525,6.58393]],
  ["Koh-I Nor",[45.29904,6.58556]],["Tourotel",[45.29568,6.58343]],["Hameau du Kashmir",[45.29865,6.57612]],
  ["L'Oxalys",[45.29784,6.57711]],["Village Montana Plein Sud",[45.29731,6.57608]],["Residence Montana",[45.29697,6.5784]],
- ["Le Cheval Blanc",[45.29671,6.57802]],["Les Balcons",[45.29992,6.57917]]
+ ["Le Cheval Blanc",[45.29671,6.57802]],["Les Balcons",[45.29992,6.57917]],
+ ["Village Club du Soleil",[45.3181,6.5463],"lm"] // * approximate (Reberty 2000), check on site
 ];
 const LANDMARKS = [
  ["תחנת האוטובוסים (Gare Routière)",[45.29767,6.57996]],["Place Caron (פלאס קרון)",[45.29808,6.58145]],["הכנסייה (Place de l'Église)",[45.29801,6.58378]],
  ["רכבל Cairn",[45.29865,6.57791]],["רכבל Pionniers",[45.29523,6.58207]],["Funitel Péclet",[45.2954782,6.5758228]],
- ["חניה P0",[45.29926,6.58347]],["חניה P1",[45.29838,6.58035]],["חניה P2",[45.2984,6.57444]]
+ ["חניה P0",[45.29926,6.58347]],["חניה P1",[45.29838,6.58035]],["חניה P2",[45.2984,6.57444]],
+ ["מרפאה, לה מניור (Centre Médical du Pelvoux)",[45.324956,6.539074],"lm"],["בית מרקחת, לה מניור",[45.3239856,6.5379371],"lm"],["קופות סקיפס, Reberty 2000",[45.319099,6.54536],"lm"]
 ];
 const CAT = {rent:["השכרת ציוד","#2E64C8"],school:["בתי ספר לסקי","#C8372D"],food:["מסעדות","#8B5A2B"],sweet:["קפה ומתוקים","#A8537F"],apres:["אפרה-סקי","#6941C6"],spa:["ספא ואטרקציות","#C27C12"],shop:["מאפייה ושוק","#4A5B6B"]};
 const svgNS = "http://www.w3.org/2000/svg";
 const town = document.getElementById("town"), tip = document.getElementById("tip");
 const pts = PLACES.map((p,i) => ({...p, i, ll: COORDS[p.name]})).filter(p => p.ll);
 // "ניווט" opens Google Maps walking directions from the visitor's current location (no key needed)
-const navUrl = p => "https://www.google.com/maps/dir/?api=1&travelmode=walking&destination=" + (p.ll ? p.ll.join(",") : encodeURIComponent(p.name + " Val Thorens"));
+const navUrl = p => "https://www.google.com/maps/dir/?api=1&travelmode=walking&destination=" + (p.ll ? p.ll.join(",") : encodeURIComponent(p.name + " " + RESORTS[rOf(p)].q));
 document.querySelectorAll("a.nav-a").forEach(a => { const p = PLACES[a.dataset.i]; a.href = navUrl({...p, ll: COORDS[p.name]}); });
 const lat0 = 45.2985, kx = Math.cos(lat0*Math.PI/180)*111320, ky = 110574; // metres per degree
-const inTown = pts.filter(p => p.name !== "La Folie Douce");
+const inTown = pts.filter(p => rOf(p) === "vt" && p.name !== "La Folie Douce");
 const xs = inTown.map(p => p.ll[1]*kx), ys = inTown.map(p => -p.ll[0]*ky);
 const pad = 70, minX = Math.min(...xs)-pad, maxX = Math.max(...xs)+pad, minY = Math.min(...ys)-pad, maxY = Math.max(...ys)+pad;
 const W = maxX-minX, H = maxY-minY, u = W/Math.max(300, town.getBoundingClientRect().width || 600);
@@ -784,7 +829,7 @@ const sb = el("g",{class:"scale",transform:`translate(${W-130*u},${H-24*u})`,sty
 const nn = el("g",{class:"north",transform:`translate(${24*u},${36*u}) scale(${u})`}); el("path",{d:"M0 -18 L7 4 L0 0 L-7 4z",fill:"var(--navy)"},nn); el("text",{x:0,y:20,"text-anchor":"middle"},nn).textContent="צפון";
 const meLayer = el("g",{class:"me"});
 const marks = {};
-pts.forEach(p => {
+pts.filter(p => rOf(p) === "vt").forEach(p => {
   const [x,y] = toXY(p.ll);
   const g = el("g",{class:"mk",tabindex:"0",role:"button","aria-label":`${p.name}, ${CAT[p.cat][0]}`,transform:`translate(${x.toFixed(1)},${y.toFixed(1)})`});
   el("circle",{r:7*u,fill:CAT[p.cat][1],"stroke-width":2.5*u},g);
@@ -809,7 +854,7 @@ function setMe(ll, how, gps){
   const t = el("text",{x:x,y:y-16*u,"text-anchor":"middle",class:"lbl",style:`font-size:${12*u}px;stroke-width:${4*u}px`},meLayer); t.textContent = "אתם כאן";
   near.innerHTML = "";
   Object.keys(CAT).forEach(c => {
-    const best = pts.filter(p=>p.cat===c).map(p=>({p,d:dist(ll,p.ll)})).sort((a,b)=>a.d-b.d)[0];
+    const best = pts.filter(p=>p.cat===c && rOf(p)===R).map(p=>({p,d:dist(ll,p.ll)})).sort((a,b)=>a.d-b.d)[0];
     if (!best) return;
     const min = Math.max(1, Math.round(best.d/75));
     const li = document.createElement("li");
@@ -826,9 +871,10 @@ let OSM = null;
   if (!window.L) return;
   const box = document.getElementById("lmap"), canvas = box.parentElement;
   box.hidden = false; canvas.classList.add("has-osm");
-  const town = L.latLngBounds(pts.filter(p=>p.name!=="La Folie Douce").map(p=>p.ll)).pad(0.12);
+  const townOf = r => { const ll = pts.filter(p=>rOf(p)===r && p.name!=="La Folie Douce").map(p=>p.ll).concat(HOTELS.filter(h=>(h[2]||"vt")===r).map(h=>h[1])); return L.latLngBounds(ll).pad(ll.length < 6 ? 0.8 : 0.12); };
+  let town = townOf(R);
   const local = L.latLngBounds([[45.2938,6.5730],[45.3062,6.5900]]);
-  const ski = L.latLngBounds([[45.255,6.520],[45.330,6.650]]); // Val Thorens ski area
+  const ski = L.latLngBounds([[45.255,6.500],[45.345,6.650]]); // Val Thorens + Les Menuires ski area
   const OSMC = '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>';
   const map = L.map(box,{minZoom:13,maxZoom:18,maxBounds:ski,maxBoundsViscosity:.8,scrollWheelZoom:false,zoomSnap:0.25,zoomControl:false}).fitBounds(town);
   L.control.zoom({position:"topleft",zoomInTitle:"הגדלה",zoomOutTitle:"הקטנה"}).addTo(map);
@@ -920,7 +966,9 @@ let OSM = null;
       if (me) { drawLine(); map.fitBounds(L.latLngBounds([me.getLatLng(), p.ll]).pad(0.35), {maxZoom:17}); }
       else map.setView(p.ll, 17);
       mk[p.i].openTooltip(); },
-    refresh(){ map.invalidateSize(); if (!me) map.fitBounds(town); }
+    refresh(){ map.invalidateSize(); if (!me) map.fitBounds(town); },
+    town(r){ town = townOf(r); },
+    resort(r){ town = townOf(r); target = null; if (line) { line.remove(); line = null; } if (me) { me.remove(); me = null; } if (acc) { acc.remove(); acc = null; } if (!offline) map.fitBounds(town); }
   };
 })();
 // choose your hotel, or type a place
@@ -930,7 +978,7 @@ const hotelSel = (() => {
   const dd = document.getElementById("hotel-dd"), btn = document.getElementById("hotel-btn"), list = document.getElementById("hotel-list"), val = document.getElementById("hotel-val");
   const names = HOTELS.map(h=>h[0]).sort((a,b)=>a.localeCompare(b));
   let cur = "", act = -1, onPick = null;
-  const head = document.createElement("li"); head.className = "dd-h"; head.setAttribute("role","presentation"); head.textContent = "המלונות שלנו בוואל טורנס"; list.appendChild(head);
+  const head = document.createElement("li"); head.className = "dd-h"; head.setAttribute("role","presentation"); head.textContent = "המלונות שלנו"; list.appendChild(head);
   const items = names.map((n,i) => { const li = document.createElement("li"); li.setAttribute("role","option"); li.id = "hotel-opt-"+i; li.style.setProperty("--i", i);
     li.innerHTML = `<svg class="chk" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span>${n}</span>`;
     li.addEventListener("click", () => { choose(n); close(); btn.focus(); });
@@ -956,7 +1004,7 @@ const hotelSel = (() => {
   paint();
   return { get value(){ return cur; }, set value(v){ cur = names.includes(v) ? v : ""; paint(); }, set onpick(f){ onPick = f; } };
 })();
-function pickPlace(name, ll){ setMe(ll, "המיקום שלכם: " + name); if (hotelSel.value !== name) hotelSel.value = HOTELS.some(h=>h[0]===name) ? name : ""; }
+function pickPlace(name, ll){ const h = HOTELS.find(h=>h[0]===name) || LANDMARKS.find(h=>h[0]===name); if (h && (h[2]||"vt") !== R) setResort(h[2]||"vt", true); setMe(ll, "המיקום שלכם: " + name); if (hotelSel.value !== name) hotelSel.value = HOTELS.some(h=>h[0]===name) ? name : ""; }
 hotelSel.onpick = n => { whereQ.value = ""; const h = HOTELS.find(h=>h[0]===n); if (h) pickPlace(h[0], h[1]); };
 const KNOWN = [...HOTELS, ...LANDMARKS, ...pts.map(p=>[p.name,p.ll])];
 KNOWN.forEach(([n]) => { const o = document.createElement("option"); o.value = n; whereList.appendChild(o); });
@@ -968,7 +1016,7 @@ document.getElementById("where").addEventListener("submit", async e => {
   if (hit) { whereQ.value = hit[0]; return pickPlace(hit[0], hit[1]); }
   hint.textContent = "מחפשים...";
   try {
-    const r = await fetch("https://nominatim.openstreetmap.org/search?format=json&limit=1&bounded=1&viewbox=6.570,45.307,6.592,45.292&q=" + encodeURIComponent(whereQ.value + " Val Thorens"));
+    const r = await fetch("https://nominatim.openstreetmap.org/search?format=json&limit=1&bounded=1&viewbox=" + RESORTS[R].box + "&q=" + encodeURIComponent(whereQ.value + " " + RESORTS[R].q));
     const j = await r.json();
     if (j[0]) return setMe([+j[0].lat, +j[0].lon], "המיקום שלכם: " + whereQ.value);
   } catch (err) {}
@@ -988,13 +1036,28 @@ document.getElementById("locate").addEventListener("click", () => {
   if (OSM) OSM.follow(true);
   watchId = navigator.geolocation.watchPosition(pos => {
     const ll = [pos.coords.latitude,pos.coords.longitude];
-    if (dist(ll,[lat0,6.582]) > 4000) { hint.textContent = "נראה שאתם לא בוואל טורנס כרגע. געו במפה כדי לנסות."; navigator.geolocation.clearWatch(watchId); watchId = null; return; }
+    const here = Object.keys(RESORTS).sort((a,b)=>dist(ll,RESORTS[a].c)-dist(ll,RESORTS[b].c))[0];
+    if (dist(ll,RESORTS[here].c) > 4000) { hint.textContent = "נראה שאתם לא בוואל טורנס כרגע. געו במפה כדי לנסות."; navigator.geolocation.clearWatch(watchId); watchId = null; return; }
     hotelSel.value = ""; whereQ.value = "";
+    if (here !== R) setResort(here, true);
     if (OSM) OSM.me(ll, Math.min(pos.coords.accuracy||0, 300));
     setMe(ll, first ? "זה המיקום שלכם עכשיו. המפה מתעדכנת כשאתם זזים." : "המיקום מתעדכן.", true);
     first = false;
   }, err => { if (first) fail(); }, {enableHighAccuracy:true, timeout:10000, maximumAge:5000});
 });
+// resort switch (ואל טורנס | לה מניור): texts, places, map and "nearest" follow it
+const nearEmpty = near.innerHTML;
+function setResort(r, keepMe){
+  R = r; document.documentElement.dataset.r = r;
+  try { localStorage.setItem("resort", r); } catch (e) {}
+  document.querySelectorAll("[data-rs]").forEach(el => el.textContent = RESORTS[r][el.dataset.rs]);
+  document.querySelectorAll(".rs-sw button").forEach(b => b.setAttribute("aria-pressed", b.dataset.r === r));
+  if (!keepMe) { near.innerHTML = nearEmpty; hint.textContent = "או געו במפה במקום שבו אתם נמצאים."; hotelSel.value = ""; whereQ.value = ""; if (OSM) OSM.resort(r); }
+  else if (OSM) OSM.town(r);
+  const qq = document.getElementById("q"); if (qq.value) qq.dispatchEvent(new Event("input"));
+}
+document.querySelectorAll(".rs-sw button").forEach(b => b.addEventListener("click", () => { if (b.dataset.r !== R) setResort(b.dataset.r); }));
+setResort(R, true);
 // search filter
 const KEYS = {rent:"השכרה ציוד סקי סנובורד מגפיים קסדה", school:"שיעור שיעורים הדרכה מדריך ילדים", food:"אוכל ארוחת ערב", sweet:"קפה וופל מתוק מהיר", apres:"בר מסיבה ערב לילה מועדון", spa:"ספא בריכה סאונה שקיעה אטרקציה", shop:"לחם קרואסון באגט שוק גבינות"};
 const q = document.getElementById("q");
@@ -1008,7 +1071,7 @@ q.addEventListener("input", () => {
     const head = sec.querySelector("h2").textContent + " " + (KEYS[sec.id] || "");
     let shown = 0;
     ul.querySelectorAll(".place").forEach(li => {
-      const hit = !t || (li.textContent + " " + head + " " + (ALIAS[PLACES[li.dataset.i].name]||"")).toLowerCase().includes(t);
+      const hit = li.dataset.r === R && (!t || (li.textContent + " " + head + " " + (ALIAS[PLACES[li.dataset.i].name]||"")).toLowerCase().includes(t));
       li.hidden = !hit; if (hit) shown++;
     });
     sec.hidden = shown === 0; if (shown) any = true;
@@ -1038,6 +1101,7 @@ function sugRender(){
   Object.keys(CAT).forEach(k => { if ((CAT[k][0] + " " + (KEYS[k]||"")).toLowerCase().includes(t)) items.push({cat:k, label:CAT[k][0], sub:"כל ההמלצות"}); });
   const byName = [], byText = [];
   PLACES.forEach((p,i) => {
+    if (rOf(p) !== R) return;
     if (p.name.toLowerCase().includes(t)) byName.push({cat:p.cat, i, label:p.name, sub:CAT[p.cat][0]});
     else if (((p.why||"").startsWith("[") ? "" : p.why + " " ) .concat(ALIAS[p.name]||"").toLowerCase().includes(t)) byText.push({cat:p.cat, i, label:p.name, sub:CAT[p.cat][0]});
   });
