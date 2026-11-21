@@ -35,7 +35,7 @@ h1,h2,h3{margin:0;line-height:1.12;font-weight:900;text-wrap:balance}
 p{margin:0}
 :focus-visible{outline:3px solid #2F6FEB;outline-offset:2px;border-radius:6px}
 .latin{direction:ltr;unicode-bidi:isolate}
-.ph{outline:1px dashed currentColor;outline-offset:3px;border-radius:3px;opacity:.75}
+.ph{display:none}/* placeholders stay hidden until real details arrive */
 [hidden]{display:none!important}
 html{scroll-padding-top:130px}
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
@@ -413,7 +413,6 @@ body.locked{overflow:hidden}
   <div class="bg-i" data-k="rent" style="background-image:var(--im-rent)"></div><div class="bg-i" data-k="school" style="background-image:var(--im-school)"></div><div class="bg-i" data-k="food" style="background-image:var(--im-food)"></div><div class="bg-i" data-k="sweet" style="background-image:var(--im-sweet)"></div><div class="bg-i" data-k="apres" style="background-image:var(--im-apres)"></div><div class="bg-i" data-k="spa" style="background-image:var(--im-spa)"></div><div class="bg-i" data-k="shop" style="background-image:var(--im-shop)"></div><div class="bg-i" data-k="map" style="background-image:var(--im-map)"></div><div class="bg-i" data-k="about" style="background-image:var(--im-about)"></div><div class="bg-i" data-k="gear" style="background-image:var(--im-gear)"></div>
   <canvas id="snow"></canvas>
 </div>
-<div class="demo">הדמיה · מה שמסומן בקו מקווקו ממתין לפרטים אמיתיים · התמונות זמניות</div>
 <header class="hdr">
   <div class="hdr-top"><div class="wrap">
     <a class="logo" href="#top" aria-label="ואל טורנס, לראש הדף">
@@ -428,7 +427,7 @@ body.locked{overflow:hidden}
 <section class="hero" data-bg="hero"><div class="wrap">
   <p class="hero-k">2,300 מ׳ · שלושת העמקים</p>
   <h1 class="hero-title"><span>ההמלצות החמות</span> של צוות פינגווין בוואל טורנס</h1>
-  <p class="lede">המקומות שאנחנו, צוות פינגווין, הולכים אליהם כל העונה. ובחלק מהם מחכה לכם הטבה קטנה מאיתנו.</p>
+  <p class="lede">המקומות שאנחנו, צוות פינגווין, הולכים אליהם כל העונה.</p>
   <form class="find" role="search" id="find-form">
     <label for="q" class="sr" hidden>מה מחפשים?</label>
     <div class="find-row">
@@ -450,7 +449,6 @@ body.locked{overflow:hidden}
 <section class="sec about-sec" id="about" data-bg="about"><div class="wrap"><div class="sec-h"><div><span class="sec-w">who we are</span><h2>מי אנחנו</h2><p class="intro">הצוות שמאחורי ההמלצות.</p></div></div><div class="about">
   <div>
     <p>צוות הנציגים של פינגווין בוואל טורנס. אנחנו גרים באתר כל העונה, מכירים את המקומות ומכירים את האנשים שמאחוריהם.</p>
-    <p><a href="#" class="ph">[קישור ליצירת קשר: וואטצאפ / אתר פינגווין]</a></p>
   </div>
 </div></div></section>
 </main>
@@ -706,11 +704,7 @@ PLACES.forEach((p,i) => {
   li.innerHTML = `
     <div class="top">
       <div style="min-width:0"><h3>${ph(p.name)}</h3></div>
-      ${p.free ? `<div class="off free">המלצה בלבד</div>` : `<button class="perk-chip" type="button" aria-expanded="false" aria-controls="pass-${i}">הטבה <span class="ph">[__%]</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
-      <div class="pass" id="pass-${i}" hidden>
-        <p>אומרים בקופה "צוות פינגווין" או מראים את הקוד:</p>
-        <div class="pass-row"><div class="code ph">[קוד]</div><button class="copy" id="copy-${i}">העתקה</button></div>
-      </div>`}
+      
     </div>
     <p class="why">${txt(p.why)}</p>
     <div class="acts">
